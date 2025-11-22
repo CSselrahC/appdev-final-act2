@@ -1,4 +1,3 @@
-// ProductTable.js
 import React, { useState } from 'react';
 import { Button, Table, Badge, ButtonGroup } from 'react-bootstrap';
 

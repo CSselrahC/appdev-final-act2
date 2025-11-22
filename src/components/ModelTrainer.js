@@ -35,7 +35,7 @@ export default function ModelTrainer({ products, onModelTrained }) {
         p.leadTimeDays,
       ]);
 
-      // Label rule: reorder if inventory is less than avgSales * leadTime
+      // reorder if inventory is less than avgSales * leadTime
       const outputArrs = products.map(p =>
         p.currentInventory < (p.avgSalesPerWeek * p.leadTimeDays) ? 1 : 0
       );

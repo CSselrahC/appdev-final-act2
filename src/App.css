@@ -1,51 +1,42 @@
-.App {
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+body {
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #212529;
 }
 
-.navbar {
-  background-color: #282c34;
-  padding: 1rem;
-  margin-bottom: 2rem;
-  border-radius: 8px;
+h1,
+h5 {
+  font-family: 'Segoe UI Semibold', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.nav-link {
-  color: #61dafb;
-  text-decoration: none;
-  margin: 0 1rem;
-  font-size: 1.2rem;
-  transition: color 0.3s;
+.text-primary {
+  color: #0d6efd !important;
 }
 
-.nav-link:hover {
-  color: white;
+.text-secondary {
+  color: #6c757d !important;
 }
 
-.main-content {
-  min-height: 400px;
+.fw-bold {
+  font-weight: 700 !important;
 }
 
-h1 {
-  color: #282c34;
-  margin-bottom: 1rem;
+.fw-semibold {
+  font-weight: 600 !important;
 }
 
 p {
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: 1rem;
-}
-
-ul {
-  text-align: left;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-li {
+  font-size: 1rem;
+  line-height: 1.5;
   margin-bottom: 0.5rem;
-  color: #666;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #0d6efd;
+  color: white;
+  border-color: #0d6efd;
+}
+
+.table {
+  background-color: white;
 }
