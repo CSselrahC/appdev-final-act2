@@ -1,55 +1,85 @@
-import React, { useState } from "react";
-import * as tf from "@tensorflow/tfjs";
+// App.js
+import React, { useState, useEffect } from 'react';
+import ProductTable from './components/ProductTable';
+import useReorderModel from './hooks/useReorderModel';
+import { Container, Spinner, Alert } from 'react-bootstrap';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function InventoryPredictor() {
-    const [prediction, setPrediction] = useState(null);
+const PRODUCTS_API_URL = process.env.REACT_APP_PRODUCTS_API_URL || 'data/products.json';
 
-    // Example training data (stock, avgSales, leadTime)
-    const trainingData = tf.tensor2d([
-        [20, 50, 3],
-        [5, 30, 5],
-        [15, 40, 4],
-        [8, 60, 2],
-    ]); // creates a 2D tensor (matrix) from the provided data.
+function App() {
+  const [products, setProducts] = useState([]);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(false);
+  const [error, setError] = useState(null);
+  const reorderThreshold = 0.75;
 
-    // Labels: 1 = reorder, 0 = don't reorder
-    const outputData = tf.tensor2d([[0], [1], [0], [1]]);
+  const { predictions, isTraining, metrics } = useReorderModel(products, reorderThreshold);
 
-    const handlePredict = async () => {
-        // 1. Create model
-        const model = tf.sequential();
-        model.add(
-            tf.layers.dense({
-                inputShape: [3], units: 8, activation: "relu"
-            })
-        );
-        model.add(tf.layers.dense({ units: 1, activation: "sigmoid" }));
+  useEffect(() => {
+    async function fetchProducts() {
+      setIsLoadingProducts(true);
+      setError(null);
+      try {
+        const res = await fetch(PRODUCTS_API_URL);
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        const data = await res.json();
+        setProducts(data);
+      } catch (e) {
+        setError('Failed to load products. Please try again later.');
+        console.error('Failed to fetch products:', e);
+      } finally {
+        setIsLoadingProducts(false);
+      }
+    }
+    fetchProducts();
+  }, []);
 
-        // 2. Compile model
-        model.compile({
-            optimizer: "adam",
-            loss: "binaryCrossentropy",
-            metrics: ["accuracy"],
-        });
+  const totalProducts = products.length;
+  let reorderCount = 0;
+  let noReorderCount = 0;
+  products.forEach(product => {
+    const prediction = predictions[product.id];
+    if (prediction === 'Reorder') reorderCount++;
+    else noReorderCount++;
+  });
 
-        // 3. Train model
-        await model.fit(trainingData, outputData, {
-            epochs: 200,
-            shuffle: true,
-        });
+  useEffect(() => {
+    document.title = "Forecast";
+  }, []);
 
-        // 4. Predict a new product
-        const newProduct = tf.tensor2d([[10, 45, 3]]);
-        const result = model.predict(newProduct);
-        const value = (await result.data())[0];
-        setPrediction(value > 0.5 ? "Reorder" : "No Reorder");
-    };
-    
-    return (
-        <div style={{ padding: 20 }}>
-            <h2>Inventory Reorder Predictor</h2>
-            <button onClick={handlePredict}>Predict</button>
-            {prediction && <p>Prediction: {prediction}</p>}
+  return (
+    <Container className="my-4">
+      <h1 className="mb-4">Forecast - Inventory Reorder Predictor</h1>
+
+      {error && <Alert variant="danger">{error}</Alert>}
+
+      {isLoadingProducts && (
+        <div className="text-center my-4">
+          <Spinner animation="border" role="status" />
+          <div>Loading products...</div>
         </div>
-    );
+      )}
+
+      {!isLoadingProducts && !error && (
+        <>
+          <div className="mb-4">
+            <h5>Summary</h5>
+            <p>Total products: {totalProducts}</p>
+            <p>Products to reorder: {reorderCount}</p>
+            <p>Products sufficient in stock: {noReorderCount}</p>
+            {isTraining && (
+              <div className="text-info">
+                Model is training, please wait...
+              </div>
+            )}
+          </div>
+
+          <ProductTable products={products} predictions={predictions} />
+        </>
+      )}
+    </Container>
+  );
 }
+
+export default App;
