@@ -10,7 +10,7 @@ import useReorderModel from './hooks/useReorderModel';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const PRODUCTS_API_URL = process.env.REACT_APP_PRODUCTS_API_URL || 'data/products.json';
+const PRODUCTS_API_URL = process.env.REACT_APP_PRODUCTS_API_URL || '/data/products.json';
 
 function App() {
   const [products, setProducts] = useState([]);
