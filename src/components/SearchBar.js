@@ -8,8 +8,9 @@ function SearchBar({ filterText, onFilterTextChange }) {
                 type="text"
                 placeholder="Search products by name..."
                 value={filterText}
-                onChange={e => onFilterTextChange(e.target.value)}
+                onChange={(e) => onFilterTextChange(e.target.value)}
                 aria-label="Search products"
+                style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
             />
         </Form>
     );

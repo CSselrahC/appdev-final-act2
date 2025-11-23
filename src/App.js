@@ -62,14 +62,15 @@ function App() {
   });
 
   return (
-    <Container className="my-3">
-      <h1 className="mb-4 text-center">Forecast - Inventory Reorder Predictor</h1>
+    <div className="app-container">
+      <h1 className="mb-1 text-start text-info">Forecast</h1>
+      <h5 className="mb-4 text-start text-light">Inventory Reorder Predictor</h5>
 
       {error && <Alert variant="danger">{error}</Alert>}
 
       <SearchBar filterText={filterText} onFilterTextChange={setFilterText} />
 
-      <div className="mb-3 text-center">
+      <div className="mb-3 text-center text-info">
         <Button onClick={fetchProducts} disabled={isLoadingProducts}>
           {isLoadingProducts ? 'Refreshing...' : 'Refresh'}
         </Button>
@@ -84,7 +85,9 @@ function App() {
           <ProductTable products={filteredProducts} predictions={predictions} />
         </>
       )}
-    </Container>
+
+      <p className="text-light">Powered by TensorFlow.js | Created by Charles Carreon</p>
+    </div>
   );
 }
 

@@ -15,19 +15,19 @@ function ProductTable({ products, predictions }) {
     <>
       <ButtonGroup className="mb-3">
         <Button
-          variant={filter === 'all' ? 'primary' : 'outline-primary'}
+          variant={filter === 'all' ? 'light' : 'outline-light'}
           onClick={() => setFilter('all')}
         >
           Show All
         </Button>
         <Button
-          variant={filter === 'reorder' ? 'primary' : 'outline-primary'}
+          variant={filter === 'reorder' ? 'light' : 'outline-light'}
           onClick={() => setFilter('reorder')}
         >
           Show Reorder Only
         </Button>
         <Button
-          variant={filter === 'noReorder' ? 'primary' : 'outline-primary'}
+          variant={filter === 'noReorder' ? 'light' : 'outline-light'}
           onClick={() => setFilter('noReorder')}
         >
           Show No Reorder Only
