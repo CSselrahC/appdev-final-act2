@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Spinner, Alert, Form, Button } from 'react-bootstrap';
+import { Spinner, Alert, Button } from 'react-bootstrap';
 
 import ProductTable from './components/ProductTable';
 import SummaryDashboard from './components/SummaryDashboard';
